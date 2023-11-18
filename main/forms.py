@@ -9,7 +9,7 @@ class PersonInfoForm(forms.ModelForm):
             widget = forms.TextInput(attrs={
                 "name":"first_name",
                 "type":"text",
-                "class":"form-control",
+                "class":"form-control my-2",
                 "placeholder":"First Name",
                 }))
 
@@ -19,7 +19,7 @@ class PersonInfoForm(forms.ModelForm):
             widget = forms.TextInput(attrs={
                 "name":"last_name",
                 "type":"text",
-                "class":"form-control",
+                "class":"form-control my-2",
                 "placeholder":"Last Name",
                 }))
 
@@ -29,7 +29,7 @@ class PersonInfoForm(forms.ModelForm):
             widget = forms.TextInput(attrs={
                 "name":"department",
                 "type":"text",
-                "class":"form-control",
+                "class":"form-control my-2",
                 "placeholder":"Department",
                 }))
 
@@ -39,7 +39,7 @@ class PersonInfoForm(forms.ModelForm):
             widget = forms.TextInput(attrs={
                 "name":"course",
                 "type":"text",
-                "class":"form-control",
+                "class":"form-control my-2",
                 "placeholder":"course",
                 }))
 
