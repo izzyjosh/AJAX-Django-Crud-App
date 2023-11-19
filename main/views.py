@@ -22,12 +22,15 @@ def create(request):
                     department=department,
                     course=course,)
 
-            return JsonResponse({"status":"user saved successfully"})
+            person = PersonInfo.objects.values()
+            person_data = list(person)
+
+            return JsonResponse({"status":"saved","person_data":person_data})
         else:
-            return JsonResponse({"status":"user not saved"})
+            return JsonResponse({"status":"not saved"})
 
 
 def home(request):
     form = PersonInfoForm()
-
-    return render(request,"crud.html",{"form":form})
+    persons = PersonInfo.objects.all()
+    return render(request,"crud.html",{"form":form,"persons":persons})

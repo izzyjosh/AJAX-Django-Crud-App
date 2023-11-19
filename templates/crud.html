@@ -42,18 +42,20 @@
                </tr>
              </thead>
              <tbody>
+		     {% for person in persons %}
               
                <tr>
-                 <td>1</td>
-                 <td>Joshua</td>
-                 <td>Joseph</td>
-                 <td>AED</td>
-                 <td>Aerospace</td>
+		       <td>{{person.id}}</td>
+		       <td>{{person.first_name}}</td>
+		       <td>{{person.last_name}}</td>
+		       <td>{{person.department}}</td>
+		       <td>{{person.course}}</td>
                  <td>
                    <input type="button" class="btn btn-sm btn-warning mb-1" value="edit">
                    <input type="button" class="btn btn-sm btn-danger mb-1" value="delete">
                  </td>
                </tr>
+	       {% endfor %}
              </tbody>
            </table>
            </div>
@@ -67,6 +69,7 @@
 <script>
 	$("#create-form").on('submit',function (e) {
 		e.preventDefault();
+		let output = "";
 		let display = $(".display");
 		let userdata = {
 			first_name: $("input[name='first_name']").val(),
@@ -80,7 +83,21 @@
 			method: "POST",
 			data: userdata,
 			success: function (data) {
-				display.html(`${data.status}`);
+				let p = data.person_data;
+				if (data.status == "saved") {
+					for (i=0; i<p.length; i++) {
+						output += `
+						<tr>                                                                          <td>${p[i].id}</td>
+                       <td>${p[i].first_name}</td>
+                       <td>${p[i].last_name}</td>
+                       <td>${p[i].department}</td>
+		       <td>${p[i].course}</td>                                      <td>                                                                    <input type="button" class="btn btn-sm btn-warning mb-1" value="edit" data-sid="${p[i].id}">                                                                      <input type="button" class="btn btn-sm btn-danger mb-1" value="delete" data-sid="${p[i].id}">                                                                   </td>                                                               </tr>
+
+							`;
+					}
+					$("tbody").html(output);
+
+				}
 				e.target.reset();
 			},
 		});
