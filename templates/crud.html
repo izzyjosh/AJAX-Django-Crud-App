@@ -1,108 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
-<body>
-  <header>
-    <h2 class="text-center alert alert-danger my-3"> Django AJAX Crud App</h2>
-  </header>
-  <main>
-    <div class="container">
-      <div class="row ">
-         <div class="col-12 col-md-4 my-3">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <header>
+      <h2 class="text-center alert alert-danger my-3">Django AJAX Crud App</h2>
+    </header>
+    <main>
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-md-4 my-3">
             <h3 class="test-center alert alert-success">Create Form</h3>
-	    <p class="display"></p>
-           <form action="" method="post" id="create-form">
-		   {% csrf_token %}
-		   {{ form.first_name }}
-		   {{ form.last_name }}
-		   {{ form.department }}
-		   {{ form.course }}
-            
-             <button class="btn btn-primary">save</button>
-           </form>
-         </div>
-         <div class="col-12 col-md-8 my-3">
-           <h3 class="text-center alert alert-success">Available Data</h3>
-           <div class="table-responsive">
-           <table class="table table-striped table-bordered">
-             <thead>
-               <tr>
-                 <td>id</td>
-                 <td>First Name</td>
-                 <td>Last Name</td>
-                 <td>Department</td>
-                 <td>Course</td>
-                 <td>Action</td>
-               </tr>
-             </thead>
-             <tbody>
-		     {% for person in persons %}
-              
-               <tr>
-		       <td>{{person.id}}</td>
-		       <td>{{person.first_name}}</td>
-		       <td>{{person.last_name}}</td>
-		       <td>{{person.department}}</td>
-		       <td>{{person.course}}</td>
-                 <td>
-                   <input type="button" class="btn btn-sm btn-warning mb-1" value="edit">
-                   <input type="button" class="btn btn-sm btn-danger mb-1" value="delete">
-                 </td>
-               </tr>
-	       {% endfor %}
-             </tbody>
-           </table>
-           </div>
-           
-         </div>
+            <p class="display"></p>
+            <form action="" method="post" id="create-form">
+              {% csrf_token %} 
+              {{ form.first_name }} 
+              {{ form.last_name }} 
+              {{ form.department }} 
+              {{ form.course }}
+
+              <button class="btn btn-primary">save</button>
+            </form>
+          </div>
+          <div class="col-12 col-md-8 my-3">
+            <h3 class="text-center alert alert-success">Available Data</h3>
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <td>id</td>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Department</td>
+                    <td>Course</td>
+                    <td>Action</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for person in persons %}
+
+                  <tr id="{{person.id}}">
+                    <td>{{person.id}}</td>
+                    <td>{{person.first_name}}</td>
+                    <td>{{person.last_name}}</td>
+                    <td>{{person.department}}</td>
+                    <td>{{person.course}}</td>
+                    <td>
+                      <input
+                        type="button"
+                        class="btn btn-sm btn-warning mb-1"
+                        value="edit"
+                        id="edit-btn"
+                        data-sid="{{person.id}}"
+                      />
+                      <input
+                        type="button"
+                        class="btn btn-sm btn-danger mb-1"
+                        value="delete"
+                        id="delete-btn"
+                        data-sid="{{person.id}}"
+                      />
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </main>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-</script>
-<script>
-	$("#create-form").on('submit',function (e) {
-		e.preventDefault();
-		let output = "";
-		let display = $(".display");
-		let userdata = {
-			first_name: $("input[name='first_name']").val(),
-			last_name: $("input[name='last_name']").val(),
-			department: $("input[name='department']").val(),
-			course: $("input[name='course']").val()
-		};
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
 
-		$.ajax({
-			url: "{% url 'create' %}",
-			method: "POST",
-			data: userdata,
-			success: function (data) {
-				let p = data.person_data;
-				if (data.status == "saved") {
-					for (i=0; i<p.length; i++) {
-						output += `
-						<tr>                                                                          <td>${p[i].id}</td>
-                       <td>${p[i].first_name}</td>
-                       <td>${p[i].last_name}</td>
-                       <td>${p[i].department}</td>
-		       <td>${p[i].course}</td>                                      <td>                                                                    <input type="button" class="btn btn-sm btn-warning mb-1" value="edit" data-sid="${p[i].id}">                                                                      <input type="button" class="btn btn-sm btn-danger mb-1" value="delete" data-sid="${p[i].id}">                                                                   </td>                                                               </tr>
+      // create person
 
-							`;
-					}
-					$("tbody").html(output);
+      $("#create-form").on("submit", function (e) {
+        e.preventDefault();
+        let output = "";
+        let display = $(".display");
+        let userdata = {
+          first_name: $("input[name='first_name']").val(),
+          last_name: $("input[name='last_name']").val(),
+          department: $("input[name='department']").val(),
+          course: $("input[name='course']").val(),
+        };
 
-				}
-				e.target.reset();
-			},
-		});
-	});
-</script>
-</head>
-</body>
+        $.ajax({
+          url: "{% url 'create' %}",
+          method: "POST",
+          data: userdata,
+          success: function (data) {
+            let p = data.person_data;
+            if (data.status == "saved") {
+              for (i = 0; i < p.length; i++) {
+                output += `
+            <tr id="${p[i].id}">                                                <td>${p[i].id}</td>
+              <td>${p[i].first_name}</td>
+              <td>${p[i].last_name}</td>
+              <td>${p[i].department}</td>
+		          <td>${p[i].course}</td>                                           <td>                                                                 <input type="button" class="btn btn-sm btn-warning mb-1" value="edit" data-sid="${p[i].id} id="edit-btn"">                          <input type="button" class="btn btn-sm btn-danger mb-1" value="delete" data-sid="${p[i].id} id="delete-btn">                     </td>                                                           </tr>`;
+              }
+              $("tbody").html(output);
+            }
+            e.target.reset();
+          },
+        });
+      });
+
+
+      // Delete person
+
+      $("#delete-btn").on('click', function () {
+        const id = $(this).attr("data-sid");
+        const mydata = {id:id};
+
+        $.ajax({
+          url: "{% url 'delete' %}",
+          method: "POST",
+          data: mydata,
+          success: function (data) {
+            if (data.status === 1) {
+              $('#' + id).remove();  
+            };
+          },
+        });
+      });
+    </script>
+  </body>
 </html>
