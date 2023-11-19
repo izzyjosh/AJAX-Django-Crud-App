@@ -4,17 +4,17 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import PersonInfo
 
-
 @csrf_exempt
 def create(request):
     if request.method == "POST":
         form = PersonInfoForm(request.POST)
 
         if form.is_valid():
-            first_name = request.POST["first_name"]
-            last_name = request.POST["last_name"]
-            department = request.POST["department"]
-            course = request.POST["course"]
+            first_name = request.POST.get("first_name")
+            last_name = request.POST.get("last_name")
+            department = request.POST.get("department")
+            course = request.POST.get("course")
+
 
             PersonInfo.objects.create(
                     first_name=first_name,

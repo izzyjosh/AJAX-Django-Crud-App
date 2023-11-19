@@ -15,7 +15,8 @@ class PersonInfoForm(forms.ModelForm):
 
 
     last_name = forms.CharField(
-            label="",                                                             required=True,
+            label="",
+            required=True,
             widget = forms.TextInput(attrs={
                 "name":"last_name",
                 "type":"text",
@@ -25,7 +26,8 @@ class PersonInfoForm(forms.ModelForm):
 
 
     department = forms.CharField(
-            label="",                                                             required=True,
+            label="",
+            required=True,
             widget = forms.TextInput(attrs={
                 "name":"department",
                 "type":"text",
@@ -35,7 +37,8 @@ class PersonInfoForm(forms.ModelForm):
 
 
     course = forms.CharField(
-            label="",                                                             required=True,
+            label="",
+            required=True,
             widget = forms.TextInput(attrs={
                 "name":"course",
                 "type":"text",
